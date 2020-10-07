@@ -1,0 +1,9 @@
+D:\WebApiMultilayer\WebApiMultilayer.BLL\bin\Debug\netcoreapp3.1\WebApiMultilayer.BLL.deps.json
+D:\WebApiMultilayer\WebApiMultilayer.BLL\bin\Debug\netcoreapp3.1\WebApiMultilayer.BLL.dll
+D:\WebApiMultilayer\WebApiMultilayer.BLL\bin\Debug\netcoreapp3.1\WebApiMultilayer.BLL.pdb
+D:\WebApiMultilayer\WebApiMultilayer.BLL\obj\Debug\netcoreapp3.1\WebApiMultilayer.BLL.csprojAssemblyReference.cache
+D:\WebApiMultilayer\WebApiMultilayer.BLL\obj\Debug\netcoreapp3.1\WebApiMultilayer.BLL.AssemblyInfoInputs.cache
+D:\WebApiMultilayer\WebApiMultilayer.BLL\obj\Debug\netcoreapp3.1\WebApiMultilayer.BLL.AssemblyInfo.cs
+D:\WebApiMultilayer\WebApiMultilayer.BLL\obj\Debug\netcoreapp3.1\WebApiMultilayer.BLL.csproj.CoreCompileInputs.cache
+D:\WebApiMultilayer\WebApiMultilayer.BLL\obj\Debug\netcoreapp3.1\WebApiMultilayer.BLL.dll
+D:\WebApiMultilayer\WebApiMultilayer.BLL\obj\Debug\netcoreapp3.1\WebApiMultilayer.BLL.pdb
