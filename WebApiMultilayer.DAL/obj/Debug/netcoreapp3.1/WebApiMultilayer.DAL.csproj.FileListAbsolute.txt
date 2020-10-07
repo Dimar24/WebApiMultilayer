@@ -1,9 +1,0 @@
-D:\WebApiMultilayer\WebApiMultilayer.DAL\bin\Debug\netcoreapp3.1\WebApiMultilayer.DAL.deps.json
-D:\WebApiMultilayer\WebApiMultilayer.DAL\bin\Debug\netcoreapp3.1\WebApiMultilayer.DAL.dll
-D:\WebApiMultilayer\WebApiMultilayer.DAL\obj\Debug\netcoreapp3.1\WebApiMultilayer.DAL.csprojAssemblyReference.cache
-D:\WebApiMultilayer\WebApiMultilayer.DAL\obj\Debug\netcoreapp3.1\WebApiMultilayer.DAL.AssemblyInfoInputs.cache
-D:\WebApiMultilayer\WebApiMultilayer.DAL\obj\Debug\netcoreapp3.1\WebApiMultilayer.DAL.AssemblyInfo.cs
-D:\WebApiMultilayer\WebApiMultilayer.DAL\bin\Debug\netcoreapp3.1\WebApiMultilayer.DAL.pdb
-D:\WebApiMultilayer\WebApiMultilayer.DAL\obj\Debug\netcoreapp3.1\WebApiMultilayer.DAL.dll
-D:\WebApiMultilayer\WebApiMultilayer.DAL\obj\Debug\netcoreapp3.1\WebApiMultilayer.DAL.pdb
-D:\WebApiMultilayer\WebApiMultilayer.DAL\obj\Debug\netcoreapp3.1\WebApiMultilayer.DAL.csproj.CoreCompileInputs.cache
