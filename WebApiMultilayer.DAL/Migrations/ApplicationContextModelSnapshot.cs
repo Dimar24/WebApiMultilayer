@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WebApiMultilayer.DAL.EF;
+using WebApiMultilayer.DAL;
 
 namespace WebApiMultilayer.DAL.Migrations
 {
@@ -30,7 +30,8 @@ namespace WebApiMultilayer.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Path")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
@@ -47,16 +48,19 @@ namespace WebApiMultilayer.DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(30)");
 
                     b.Property<int>("EnginyCapacity")
                         .HasColumnType("int");
 
                     b.Property<string>("EnginyType")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(30)");
 
                     b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("MaxSpeed")
                         .HasColumnType("int");
@@ -68,7 +72,8 @@ namespace WebApiMultilayer.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Transmition")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(30)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
@@ -93,7 +98,8 @@ namespace WebApiMultilayer.DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(30)");
 
                     b.HasKey("Id");
 
@@ -111,7 +117,8 @@ namespace WebApiMultilayer.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(30)");
 
                     b.HasKey("Id");
 
@@ -128,7 +135,8 @@ namespace WebApiMultilayer.DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("NumberPhone")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(25)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -149,7 +157,8 @@ namespace WebApiMultilayer.DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("Id");
 
@@ -163,14 +172,17 @@ namespace WebApiMultilayer.DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Email")
-                        .HasColumnType("int");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("varchar(30)");
 
-                    b.Property<int>("Login")
-                        .HasColumnType("int");
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("varchar(30)");
 
-                    b.Property<int>("Password")
-                        .HasColumnType("int");
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("varchar(30)");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");

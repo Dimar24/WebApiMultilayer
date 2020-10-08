@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using WebApiMultilayer.DAL.EF;
+using WebApiMultilayer.DAL;
 
 namespace WebApiMultilayer.WEB
 {

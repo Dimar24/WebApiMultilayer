@@ -2,7 +2,7 @@
 
 namespace WebApiMultilayer.DAL.Migrations
 {
-    public partial class NewMigration : Migration
+    public partial class AddFluent : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace WebApiMultilayer.DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(type: "varchar(30)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,7 +25,7 @@ namespace WebApiMultilayer.DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(type: "varchar(20)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,7 +38,7 @@ namespace WebApiMultilayer.DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(type: "varchar(30)", nullable: false),
                     MarkId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -58,9 +58,9 @@ namespace WebApiMultilayer.DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Login = table.Column<int>(nullable: false),
-                    Email = table.Column<int>(nullable: false),
-                    Password = table.Column<int>(nullable: false),
+                    Login = table.Column<string>(type: "varchar(30)", nullable: false),
+                    Email = table.Column<string>(type: "varchar(30)", nullable: false),
+                    Password = table.Column<string>(type: "varchar(30)", nullable: false),
                     RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -80,11 +80,11 @@ namespace WebApiMultilayer.DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Color = table.Column<string>(nullable: true),
+                    Color = table.Column<string>(type: "varchar(30)", nullable: false),
                     EnginyCapacity = table.Column<int>(nullable: false),
-                    EnginyType = table.Column<string>(nullable: true),
-                    Transmition = table.Column<string>(nullable: true),
-                    Location = table.Column<string>(nullable: true),
+                    EnginyType = table.Column<string>(type: "varchar(30)", nullable: false),
+                    Transmition = table.Column<string>(type: "varchar(30)", nullable: false),
+                    Location = table.Column<string>(type: "varchar(255)", nullable: false),
                     MaxSpeed = table.Column<int>(nullable: false),
                     Year = table.Column<int>(nullable: false),
                     ModelId = table.Column<int>(nullable: false),
@@ -114,7 +114,7 @@ namespace WebApiMultilayer.DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NumberPhone = table.Column<string>(nullable: true),
+                    NumberPhone = table.Column<string>(type: "varchar(25)", nullable: false),
                     UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -134,7 +134,7 @@ namespace WebApiMultilayer.DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Path = table.Column<string>(nullable: true),
+                    Path = table.Column<string>(type: "varchar(255)", nullable: false),
                     AutoId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
