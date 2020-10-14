@@ -1,20 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using WebApiMultilayer.DAL;
 using WebApiMultilayer.DAL.Entities;
+using WebApiMultilayer.DAL.Identity;
 using WebApiMultilayer.DAL.Interfaces;
 
 namespace WebApiMultilayer.DAL.Repositories
 {
-    class EFUnitOfWork : IUnitOfWork
+    public class EFUnitOfWork : IUnitOfWork
     {
         private ApplicationContext db;
 
-        private UserRepository userRepository;
-        private RoleRepository roleRepository;
-        private ProfileInfoRepository profileInfoRepository;
+        private ApplicationUserManager userManager;
+        private ApplicationRoleManager roleManager;
+        private IClientManager clientManager;
+
+        private ClientProfileRepository clientProfileRepository;
 
         private MarkRepository markRepository;
         private ModelRepository modelRepository;
@@ -24,40 +28,41 @@ namespace WebApiMultilayer.DAL.Repositories
         public EFUnitOfWork(DbContextOptions<ApplicationContext> options)
         {
             db = new ApplicationContext(options);
+            //userManager = new ApplicationUserManager(new UserStore<User>(db));
+            //roleManager = new ApplicationRoleManager(new RoleStore<Role>(db));
+            //clientManager = new ClientManager(db);
         }
 
-        public void Save()
+        public EFUnitOfWork()
         {
-            db.SaveChanges();
         }
 
-        private bool disposed = false;
-
-        public IRepository<User> Users
+        /*
+public IRepository<User> Users
+{
+   get
+   {
+       if (userRepository == null)
+           userRepository = new UserRepository(db);
+       return userRepository;
+   }
+}
+public IRepository<Role> Roles
+{
+   get
+   {
+       if (roleRepository == null)
+           roleRepository = new RoleRepository(db);
+       return roleRepository;
+   }
+}*/
+        public IRepository<ClientProfile> ClientProfiles
         {
             get
             {
-                if (userRepository == null)
-                    userRepository = new UserRepository(db);
-                return userRepository;
-            }
-        }
-        public IRepository<Role> Roles
-        {
-            get
-            {
-                if (roleRepository == null)
-                    roleRepository = new RoleRepository(db);
-                return roleRepository;
-            }
-        }
-        public IRepository<ProfileInfo> ProfileInfos
-        {
-            get
-            {
-                if (profileInfoRepository == null)
-                    profileInfoRepository = new ProfileInfoRepository(db);
-                return profileInfoRepository;
+                if (clientProfileRepository == null)
+                    clientProfileRepository = new ClientProfileRepository(db);
+                return clientProfileRepository;
             }
         }
 
@@ -97,6 +102,28 @@ namespace WebApiMultilayer.DAL.Repositories
                 return attachmentRepository;
             }
         }
+
+        public ApplicationUserManager UserManager
+        {
+            get { return userManager; }
+        }
+
+        public IClientManager ClientManager
+        {
+            get { return clientManager; }
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get { return roleManager; }
+        }
+
+        public void Save()
+        {
+            db.SaveChanges();
+        }
+
+        private bool disposed = false;
 
         public virtual void Dispose(bool disposing)
         {

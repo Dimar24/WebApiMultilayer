@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WebApiMultilayer.DAL;
+using WebApiMultilayer.BLL.Interfaces;
 using WebApiMultilayer.DAL.Entities;
+using WebApiMultilayer.DAL.Interfaces;
 
-namespace WebApiMultilayer.DAL.Repositories
+namespace WebApiMultilayer.BLL.Services
 {
-    public class AttachmentRepository : IRepository<Attachment>
+    class AttachmentService : IService<Attachment>
     {
-        private ApplicationContext db;
+        IUnitOfWork Database { get; set; }
 
-        public AttachmentRepository(ApplicationContext applicationContext)
+        public AttachmentService(IUnitOfWork uow)
         {
-            db = applicationContext;
+            Database = uow;
         }
 
         public void Create(Attachment item)
@@ -21,6 +22,11 @@ namespace WebApiMultilayer.DAL.Repositories
         }
 
         public void Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
         {
             throw new NotImplementedException();
         }

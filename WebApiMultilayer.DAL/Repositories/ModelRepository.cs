@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using WebApiMultilayer.DAL;
 using WebApiMultilayer.DAL.Entities;
 
 namespace WebApiMultilayer.DAL.Repositories
 {
-    class ModelRepository : IRepository<Model>
+    public class ModelRepository : IRepository<Model>
     {
         private ApplicationContext db;
 
@@ -15,29 +17,29 @@ namespace WebApiMultilayer.DAL.Repositories
             db = applicationContext;
         }
 
-        public void Create(Entities.Model item)
+        public void Create(Model item)
         {
-            throw new NotImplementedException();
+            db.Models.Add(item);
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            db.Models.Remove(Get(id));
         }
 
-        public Entities.Model Get(int id)
+        public Model Get(int id)
         {
-            throw new NotImplementedException();
+            return db.Models.Find(id);
         }
 
-        public IEnumerable<Entities.Model> GetAll()
+        public IEnumerable<Model> GetAll()
         {
-            throw new NotImplementedException();
+            return db.Models.ToList();
         }
 
-        public void Update(Entities.Model item)
+        public void Update(Model item)
         {
-            throw new NotImplementedException();
+            db.Entry(item).State = EntityState.Modified;
         }
     }
 }

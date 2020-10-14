@@ -6,7 +6,7 @@ using WebApiMultilayer.DAL.Entities;
 
 namespace WebApiMultilayer.DAL.Repositories
 {
-    class AutoRepository : IRepository<Auto>
+    public class AutoRepository : IRepository<Auto>
     {
         private ApplicationContext db;
 

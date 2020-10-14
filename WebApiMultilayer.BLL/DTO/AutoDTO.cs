@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApiMultilayer.DAL.Entities
+namespace WebApiMultilayer.BLL.DTO
 {
-    public class Auto
+    public class AutoDTO
     {
         public int Id { get; set; }
 
@@ -18,10 +18,10 @@ namespace WebApiMultilayer.DAL.Entities
         public int Year { get; set; }
 
         public int ModelId { get; set; }
-        public Model Model { get; set; }
+        public ModelDTO Model { get; set; }
         public int OwnerId { get; set; }
-        public ClientProfile clientProfile { get; set; }
+        public UserDTO user { get; set; }
 
-        public List<Attachment> Attachments { get; set; }
+        public List<AttachmentDTO> Attachments { get; set; }
     }
 }

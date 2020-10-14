@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 using WebApiMultilayer.DAL.Entities;
+using WebApiMultilayer.DAL.Identity;
 
 namespace WebApiMultilayer.DAL.Interfaces
 {
-    interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
-        IRepository<User> Users { get; }
-        IRepository<Role> Roles { get; }
-        IRepository<ProfileInfo> ProfileInfos { get; }
+        ApplicationUserManager UserManager { get; }
+        IClientManager ClientManager { get; }
+        ApplicationRoleManager RoleManager { get; }
+
+        IRepository<ClientProfile> ClientProfiles { get; }
 
         IRepository<Mark> Marks { get; }
         IRepository<Model> Models { get; }

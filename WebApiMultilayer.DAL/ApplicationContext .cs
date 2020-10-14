@@ -11,26 +11,22 @@ namespace WebApiMultilayer.DAL
 {
     public class ApplicationContext : DbContext
     {
-        DbSet<User> Users { get; set; }
-        DbSet<Role> Roles { get; set; }
-        DbSet<ProfileInfo> ProfileInfos { get; set; }
+        public DbSet<ClientProfile> ClientProfiles { get; set; }
 
-        DbSet<Mark> Marks { get; set; }
-        DbSet<Model> Models { get; set; }
-        DbSet<Auto> Autos { get; set; }
-        DbSet<Attachment> Attachments { get; set; }
+        public DbSet<Mark> Marks { get; set; }
+        public DbSet<Model> Models { get; set; }
+        public DbSet<Auto> Autos { get; set; }
+        public DbSet<Attachment> Attachments { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
-        {      
+        {   
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new ProfileInfoConfiguration());
             modelBuilder.ApplyConfiguration(new MarkConfiguration());
             modelBuilder.ApplyConfiguration(new ModelConfiguration());

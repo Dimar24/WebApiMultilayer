@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using WebApiMultilayer.DAL;
 using WebApiMultilayer.DAL.Entities;
 
 namespace WebApiMultilayer.DAL.Repositories
 {
-    class MarkRepository : IRepository<Mark>
+    public class MarkRepository : IRepository<Mark>
     {
         private ApplicationContext db;
 
@@ -17,27 +19,27 @@ namespace WebApiMultilayer.DAL.Repositories
 
         public void Create(Mark item)
         {
-            throw new NotImplementedException();
+            db.Marks.Add(item);
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            db.Marks.Remove(Get(id));
         }
 
         public Mark Get(int id)
         {
-            throw new NotImplementedException();
+            return db.Marks.Find(id);
         }
 
         public IEnumerable<Mark> GetAll()
         {
-            throw new NotImplementedException();
+            return db.Marks.ToList();
         }
 
         public void Update(Mark item)
         {
-            throw new NotImplementedException();
+            db.Entry(item).State = EntityState.Modified;
         }
     }
 }

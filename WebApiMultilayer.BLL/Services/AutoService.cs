@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WebApiMultilayer.DAL;
+using WebApiMultilayer.BLL.Interfaces;
 using WebApiMultilayer.DAL.Entities;
+using WebApiMultilayer.DAL.Interfaces;
 
-namespace WebApiMultilayer.DAL.Repositories
+namespace WebApiMultilayer.BLL.Services
 {
-    class ProfileInfoRepository : IRepository<ProfileInfo>
+    class AutoService : IService<Auto>
     {
-        private ApplicationContext db;
+        IUnitOfWork Database { get; set; }
 
-        public ProfileInfoRepository(ApplicationContext applicationContext)
+        public AutoService(IUnitOfWork uow)
         {
-            db = applicationContext;
+            Database = uow;
         }
 
-        public void Create(ProfileInfo item)
+        public void Create(Auto item)
         {
             throw new NotImplementedException();
         }
@@ -25,17 +26,22 @@ namespace WebApiMultilayer.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public ProfileInfo Get(int id)
+        public void Dispose()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ProfileInfo> GetAll()
+        public Auto Get(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(ProfileInfo item)
+        public IEnumerable<Auto> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Auto item)
         {
             throw new NotImplementedException();
         }

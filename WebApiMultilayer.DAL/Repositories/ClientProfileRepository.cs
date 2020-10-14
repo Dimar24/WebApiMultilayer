@@ -6,16 +6,16 @@ using WebApiMultilayer.DAL.Entities;
 
 namespace WebApiMultilayer.DAL.Repositories
 {
-    class UserRepository : IRepository<User>
+    public class ClientProfileRepository : IRepository<ClientProfile>
     {
         private ApplicationContext db;
 
-        public UserRepository(ApplicationContext applicationContext)
+        public ClientProfileRepository(ApplicationContext applicationContext)
         {
             db = applicationContext;
         }
 
-        public void Create(User item)
+        public void Create(ClientProfile item)
         {
             throw new NotImplementedException();
         }
@@ -25,17 +25,17 @@ namespace WebApiMultilayer.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public User Get(int id)
+        public ClientProfile Get(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<ClientProfile> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public void Update(User item)
+        public void Update(ClientProfile item)
         {
             throw new NotImplementedException();
         }

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace WebApiMultilayer.DAL.Entities
+namespace WebApiMultilayer.BLL.Interfaces
 {
-    public interface IRepository<T> where T : class
+    public interface IService<T> where T : class
     {
         IEnumerable<T> GetAll();
         T Get(int id);
         void Create(T item);
         void Update(T item);
         void Delete(int id);
+        void Dispose();
     }
 }

@@ -1,0 +1,14 @@
+﻿1. How to implement Auth for 3 roles: Guests, Users, Admins
+2. Use swagger in project, download Postman
+3. Use ILogger from Microsoft.Extensions.Logging
+4. Use routing: [Route]. [FromQuery], [FromBody], [FromRoute], [Http\{METHOD}]
+5. Create own services with dependency injection
+	1. AddScoped
+	2. AddTransient
+	3. AddSingleton
+6. HttpContext, what is this? How to get it
+7. Learn about ModelBinder
+8. SignlaR (sockets) https://metanit.com/sharp/aspnet5/30.1.php
+	1. Create new test project
+	2. Implement SignalR application
+9. MVC (only learn): ViewBag, ViewData, TempData, Session

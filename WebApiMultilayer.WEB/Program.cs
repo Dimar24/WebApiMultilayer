@@ -16,7 +16,8 @@ namespace WebApiMultilayer.WEB
     {
         public static void Main(string[] args)
         {
-            //CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
+            /*
             var host = BuildWebHost(args);
 
             using (var scope = host.Services.CreateScope())
@@ -26,7 +27,7 @@ namespace WebApiMultilayer.WEB
                 var context = services.GetRequiredService<ApplicationContext>();
             }
 
-            host.Run();
+            host.Run();*/
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

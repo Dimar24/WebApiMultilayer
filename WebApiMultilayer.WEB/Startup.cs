@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,12 +12,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WebApiMultilayer.BLL.DTO;
+using WebApiMultilayer.BLL.Interfaces;
+using WebApiMultilayer.BLL.Services;
 using WebApiMultilayer.DAL;
+using WebApiMultilayer.DAL.Entities;
+using WebApiMultilayer.DAL.Interfaces;
+using WebApiMultilayer.DAL.Repositories;
 
 namespace WebApiMultilayer.WEB
 {
     public class Startup
     {
+        IServiceCreator serviceCreator = new ServiceCreator();
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,23 +35,20 @@ namespace WebApiMultilayer.WEB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<ApplicationContext>(options =>
+                {
+                    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                });
 
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("WebApiMultilayer.DAL")));
-
-            //services.AddTransient<IDirectorysRepository, EFDirectorysRepository>();
-            //services.AddTransient<IMaterialsRepository, EFMaterialsRepository>();
-
-            //services.AddScoped<DataManager>();
-
-            /*services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });*/
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUnitOfWork, EFUnitOfWork>();
+            services.AddTransient<IService<MarkDTO>, MarkService>();
 
             services.AddControllers();
+
+            services.AddSwaggerGen();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +58,13 @@ namespace WebApiMultilayer.WEB
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseHttpsRedirection();
 
