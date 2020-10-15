@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,15 +23,37 @@ namespace WebApiMultilayer.BLL.Services
             Database = uow;
         }
 
-        public async Task<OperationDetails> Create(UserDTO userDto)
+        public async Task<ClaimsIdentity> Authenticate(UserDTO userDto, UserManager<User> managerUser, RoleManager<IdentityRole> managerRole)
         {
-            User user = await Database.UserManager.FindByEmailAsync(userDto.Email);
+
+            ClaimsIdentity claim = null;
+            // находим пользователя
+            User user = await managerUser.FindByEmailAsync(userDto.Email);
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, userDto.UserName)
+            };
+
+            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            // авторизуем его и возвращаем объект ClaimsIdentity
+            return id;
+        }
+
+        public async Task<OperationDetails> Create(UserDTO userDto, UserManager<User> managerUser, RoleManager<IdentityRole> managerRole)
+        {
+            
+            var role = new IdentityRole { Name = "User" };
+            await managerRole.CreateAsync(role);
+
+            User user = await managerUser.FindByEmailAsync(userDto.Email);
             if (user == null)
             {
                 user = new User { Email = userDto.Email, UserName = userDto.Email };
-                var result = await Database.UserManager.CreateAsync(user, userDto.Password);
+                var result = await managerUser.CreateAsync(user, userDto.Password);
+                //if (result.Errors.Count() > 0)
+                    //return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
                 // добавляем роль
-                await Database.UserManager.AddToRoleAsync(user, userDto.Role);
+                await managerUser.AddToRoleAsync(user, userDto.Role);
                 // создаем профиль клиента
                 ClientProfile clientProfile = new ClientProfile { Id = user.Id, NumberPhone = userDto.NumberPhone };
                 Database.ClientManager.Create(clientProfile);
@@ -43,34 +66,21 @@ namespace WebApiMultilayer.BLL.Services
             }
         }
 
-        public async Task<ClaimsIdentity> Authenticate(UserDTO userDto)
-        {
-            ClaimsIdentity claim = null;
-            // находим пользователя
-            User user = await Database.UserManager.FindByEmailAsync(userDto.Email);
-            // авторизуем его и возвращаем объект ClaimsIdentity
-            //if (user != null)
-                //claim = await Database.UserManager.AddClaimAsync(user, claim: claim.Claims.FirstOrDefault());
-            return claim;
-        }
-
-        // начальная инициализация бд
-        public async Task SetInitialData(UserDTO adminDto, List<string> roles)
-        {
-            foreach (string roleName in roles)
-            {
-                var role = await Database.RoleManager.FindByNameAsync(roleName);
-                if (role == null)
-                {
-                    role = new Role { Name = roleName };
-                    await Database.RoleManager.CreateAsync(role);
-                }
-            }
-            await Create(adminDto);
-        }
         public void Dispose()
         {
             Database.Dispose();
+        }
+
+        OperationDetails IUserService.Create(UserDTO userDto, UserManager<User> managerUser, RoleManager<IdentityRole> managerRole)
+        {
+            Create(userDto, managerUser, managerRole);
+            throw new NotImplementedException();
+        }
+
+        ClaimsIdentity IUserService.Authenticate(UserDTO userDto, UserManager<User> managerUser, RoleManager<IdentityRole> managerRole)
+        {
+            Authenticate(userDto, managerUser, managerRole);
+            throw new NotImplementedException();
         }
     }
 }

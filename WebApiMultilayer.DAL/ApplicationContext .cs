@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using WebApiMultilayer.DAL.Entities;
 
 namespace WebApiMultilayer.DAL
 {
-    public class ApplicationContext : DbContext
+    public class ApplicationContext : IdentityDbContext<User>
     {
         public DbSet<ClientProfile> ClientProfiles { get; set; }
 

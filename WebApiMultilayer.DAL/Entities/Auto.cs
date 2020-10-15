@@ -19,7 +19,7 @@ namespace WebApiMultilayer.DAL.Entities
 
         public int ModelId { get; set; }
         public Model Model { get; set; }
-        public int OwnerId { get; set; }
+        public string OwnerId { get; set; }
         public ClientProfile clientProfile { get; set; }
 
         public List<Attachment> Attachments { get; set; }

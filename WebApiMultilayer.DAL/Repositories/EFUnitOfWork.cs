@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Text;
 using WebApiMultilayer.DAL;
 using WebApiMultilayer.DAL.Entities;
-using WebApiMultilayer.DAL.Identity;
 using WebApiMultilayer.DAL.Interfaces;
 
 namespace WebApiMultilayer.DAL.Repositories
@@ -14,8 +13,6 @@ namespace WebApiMultilayer.DAL.Repositories
     {
         private ApplicationContext db;
 
-        private ApplicationUserManager userManager;
-        private ApplicationRoleManager roleManager;
         private IClientManager clientManager;
 
         private ClientProfileRepository clientProfileRepository;
@@ -28,9 +25,7 @@ namespace WebApiMultilayer.DAL.Repositories
         public EFUnitOfWork(DbContextOptions<ApplicationContext> options)
         {
             db = new ApplicationContext(options);
-            //userManager = new ApplicationUserManager(new UserStore<User>(db));
-            //roleManager = new ApplicationRoleManager(new RoleStore<Role>(db));
-            //clientManager = new ClientManager(db);
+            clientManager = new ClientManager(db);
         }
 
         public EFUnitOfWork()
@@ -103,19 +98,9 @@ public IRepository<Role> Roles
             }
         }
 
-        public ApplicationUserManager UserManager
-        {
-            get { return userManager; }
-        }
-
         public IClientManager ClientManager
         {
             get { return clientManager; }
-        }
-
-        public ApplicationRoleManager RoleManager
-        {
-            get { return roleManager; }
         }
 
         public void Save()

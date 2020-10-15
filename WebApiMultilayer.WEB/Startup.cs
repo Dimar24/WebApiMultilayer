@@ -4,8 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +27,6 @@ namespace WebApiMultilayer.WEB
 {
     public class Startup
     {
-        IServiceCreator serviceCreator = new ServiceCreator();
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -40,6 +42,13 @@ namespace WebApiMultilayer.WEB
                     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
                 });
+            services.AddIdentity<User, IdentityRole>(opts => {
+                opts.Password.RequiredLength = 5;   // минимальная длина
+                opts.Password.RequireNonAlphanumeric = false;   // требуются ли не алфавитно-цифровые символы
+                opts.Password.RequireLowercase = false; // требуются ли символы в нижнем регистре
+                opts.Password.RequireUppercase = false; // требуются ли символы в верхнем регистре
+                opts.Password.RequireDigit = false; // требуются ли цифры
+            }).AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUnitOfWork, EFUnitOfWork>();
@@ -59,17 +68,27 @@ namespace WebApiMultilayer.WEB
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+                HttpOnly = HttpOnlyPolicy.Always,
+                // При включении HTTPS нужно вернуть CookieSecurePolicy.Always
+                Secure = CookieSecurePolicy.None,
+            });
+
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                //c.RoutePrefix = string.Empty;
             });
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

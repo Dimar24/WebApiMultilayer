@@ -10,14 +10,14 @@ using WebApiMultilayer.DAL;
 namespace WebApiMultilayer.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20201008114114_AddFluent")]
-    partial class AddFluent
+    [Migration("20201015114620_UpdateDB")]
+    partial class UpdateDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -70,26 +70,40 @@ namespace WebApiMultilayer.DAL.Migrations
                     b.Property<int>("ModelId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OwnerId")
-                        .HasColumnType("int");
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Transmition")
                         .IsRequired()
                         .HasColumnType("varchar(30)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Year")
                         .HasColumnType("int");
+
+                    b.Property<string>("clientProfileId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ModelId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("clientProfileId");
 
                     b.ToTable("Autos");
+                });
+
+            modelBuilder.Entity("WebApiMultilayer.DAL.Entities.ClientProfile", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("NumberPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClientProfiles");
                 });
 
             modelBuilder.Entity("WebApiMultilayer.DAL.Entities.Mark", b =>
@@ -129,71 +143,56 @@ namespace WebApiMultilayer.DAL.Migrations
                     b.ToTable("Models");
                 });
 
-            modelBuilder.Entity("WebApiMultilayer.DAL.Entities.ProfileInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("NumberPhone")
-                        .IsRequired()
-                        .HasColumnType("varchar(25)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("ProfileInfos");
-                });
-
-            modelBuilder.Entity("WebApiMultilayer.DAL.Entities.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("varchar(20)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
             modelBuilder.Entity("WebApiMultilayer.DAL.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("varchar(30)");
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("varchar(30)");
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("WebApiMultilayer.DAL.Entities.Attachment", b =>
@@ -213,9 +212,18 @@ namespace WebApiMultilayer.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApiMultilayer.DAL.Entities.User", "User")
+                    b.HasOne("WebApiMultilayer.DAL.Entities.ClientProfile", "clientProfile")
                         .WithMany("Autos")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("clientProfileId");
+                });
+
+            modelBuilder.Entity("WebApiMultilayer.DAL.Entities.ClientProfile", b =>
+                {
+                    b.HasOne("WebApiMultilayer.DAL.Entities.User", "User")
+                        .WithOne("ClientProfile")
+                        .HasForeignKey("WebApiMultilayer.DAL.Entities.ClientProfile", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("WebApiMultilayer.DAL.Entities.Model", b =>
@@ -223,24 +231,6 @@ namespace WebApiMultilayer.DAL.Migrations
                     b.HasOne("WebApiMultilayer.DAL.Entities.Mark", "Mark")
                         .WithMany("Models")
                         .HasForeignKey("MarkId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("WebApiMultilayer.DAL.Entities.ProfileInfo", b =>
-                {
-                    b.HasOne("WebApiMultilayer.DAL.Entities.User", "User")
-                        .WithOne("Profile")
-                        .HasForeignKey("WebApiMultilayer.DAL.Entities.ProfileInfo", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("WebApiMultilayer.DAL.Entities.User", b =>
-                {
-                    b.HasOne("WebApiMultilayer.DAL.Entities.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
