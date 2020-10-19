@@ -16,11 +16,12 @@ namespace WebApiMultilayer.DAL.Entities
         public string Location { get; set; }
         public int MaxSpeed { get; set; }
         public int Year { get; set; }
+        public int Price { get; set; }
 
         public int ModelId { get; set; }
         public Model Model { get; set; }
-        public string OwnerId { get; set; }
-        public ClientProfile clientProfile { get; set; }
+        public int OwnerId { get; set; }
+        public User User { get; set; }
 
         public List<Attachment> Attachments { get; set; }
     }

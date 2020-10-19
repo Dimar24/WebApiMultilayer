@@ -17,14 +17,9 @@ namespace WebApiMultilayer.DAL.Repositories
             db = applicationContext;
         }
 
-        public void Create(Mark item)
+        public IEnumerable<Mark> GetAll()
         {
-            db.Marks.Add(item);
-        }
-
-        public void Delete(int id)
-        {
-            db.Marks.Remove(Get(id));
+            return db.Marks.ToList();
         }
 
         public Mark Get(int id)
@@ -32,14 +27,19 @@ namespace WebApiMultilayer.DAL.Repositories
             return db.Marks.Find(id);
         }
 
-        public IEnumerable<Mark> GetAll()
+        public void Create(Mark item)
         {
-            return db.Marks.ToList();
+            db.Marks.Add(item);
         }
 
         public void Update(Mark item)
         {
-            db.Entry(item).State = EntityState.Modified;
+            db.Marks.Update(item);
+        }
+
+        public void Delete(int id)
+        {
+            db.Marks.Remove(Get(id));
         }
     }
 }

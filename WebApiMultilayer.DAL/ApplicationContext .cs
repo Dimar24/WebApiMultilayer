@@ -12,8 +12,6 @@ namespace WebApiMultilayer.DAL
 {
     public class ApplicationContext : IdentityDbContext<User>
     {
-        public DbSet<ClientProfile> ClientProfiles { get; set; }
-
         public DbSet<Mark> Marks { get; set; }
         public DbSet<Model> Models { get; set; }
         public DbSet<Auto> Autos { get; set; }
@@ -28,7 +26,6 @@ namespace WebApiMultilayer.DAL
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new ProfileInfoConfiguration());
             modelBuilder.ApplyConfiguration(new MarkConfiguration());
             modelBuilder.ApplyConfiguration(new ModelConfiguration());
             modelBuilder.ApplyConfiguration(new AutoConfiguration());

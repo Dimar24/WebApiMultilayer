@@ -22,104 +22,52 @@ namespace WebApiMultilayer.WEB.Controllers
     public class AccountController : ControllerBase
     {
         private readonly ILogger<MarkController> _logger;
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly IUserService _service;
 
-        public AccountController(ILogger<MarkController> logger, UserManager<User> userManager, SignInManager<User> signInManager)
+
+        public AccountController(ILogger<MarkController> logger, IUserService service)
         {
             _logger = logger;
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _service = service;
         }
 
         [Route("/reg")]
         [HttpPost]
-        public async Task<IActionResult> Register(UserDTO model)
+        public async Task<IActionResult> Register([FromBody] UserDTO model)
         {
-                User user = new User { Email = model.Email, UserName = model.UserName };
-                // добавляем пользователя
-                var result = await _userManager.CreateAsync(user, model.Password);
-                    // установка куки
-                    await _signInManager.SignInAsync(user, false);
-            
-            return Ok();
+            if (await _service.Register(model))
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
 
         [Route("/login")]
         [HttpPost]
-        public async Task<IActionResult> Login(UserDTO model)
+        public async Task<IActionResult> Login([FromBody] UserDTO model)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-
-            if(user != null)
+            if (await _service.Login(model))
             {
-                var checkPassword =
-                    await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-
-                if (checkPassword.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, false);
-                }
+                return Ok();
             }
- 
-            return Ok();
+            return BadRequest();
         }
 
         [Route("/logout")]
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
-            // удаляем аутентификационные куки
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            await _service.Logout();
+            return Ok();
         }
 
-
-
-        // GET: api/<AccountController>
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Get()
         {
             _logger.LogInformation("Get");
-            return Ok();
-
-            _logger.LogInformation("Get");
-            return Ok(/*_service.GetAll()*/);
-        }
-
-        // GET api/<AccountController>/5
-        [HttpGet("{id}")]
-        public IActionResult Get([FromRoute] int id)
-        {
-            _logger.LogInformation("Get: {0}", HttpContext.Request);
-            return Ok(/*_service.Get(id)*/);
-        }
-
-        // POST api/<AccountController>
-        [HttpPost]
-        public IActionResult Post([FromBody] UserDTO userDTO)
-        {
-            _logger.LogInformation("Add: {0}", HttpContext.Request);
-            //_service.Create(userDTO);
-            return Ok();
-        }
-
-        // PUT api/<AccountController>/5
-        [HttpPut("{id}")]
-        public IActionResult Put([FromRoute] int id, [FromBody] UserDTO userDTO)
-        {
-            _logger.LogInformation("Update: {0}", HttpContext.Request);
-            userDTO.Id = id;
-            //Authenticate(userDTO);
-            //_service.Update(markDTO);
-            return Ok();
-        }
-
-        // DELETE api/<AccountController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return Ok("Hello");
         }
     }
 }

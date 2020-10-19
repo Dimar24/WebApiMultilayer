@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,53 +14,41 @@ namespace WebApiMultilayer.DAL.Repositories
     {
         private ApplicationContext db;
 
-        private IClientManager clientManager;
-
-        private ClientProfileRepository clientProfileRepository;
+        private UserManager<User> userManager;
+        private RoleManager<IdentityRole> roleManager;
+        private SignInManager<User> signInManager;
 
         private MarkRepository markRepository;
         private ModelRepository modelRepository;
         private AutoRepository autoRepository;
         private AttachmentRepository attachmentRepository;
 
-        public EFUnitOfWork(DbContextOptions<ApplicationContext> options)
+        public EFUnitOfWork(DbContextOptions<ApplicationContext> options, UserManager<User> _userManager, 
+            RoleManager<IdentityRole> _roleManager, SignInManager<User> _signInManager)
         {
             db = new ApplicationContext(options);
-            clientManager = new ClientManager(db);
+            userManager = _userManager;
+            roleManager = _roleManager;
+            signInManager = _signInManager;
+            //clientManager = new ClientManager(db);
         }
 
         public EFUnitOfWork()
         {
         }
 
-        /*
-public IRepository<User> Users
-{
-   get
-   {
-       if (userRepository == null)
-           userRepository = new UserRepository(db);
-       return userRepository;
-   }
-}
-public IRepository<Role> Roles
-{
-   get
-   {
-       if (roleRepository == null)
-           roleRepository = new RoleRepository(db);
-       return roleRepository;
-   }
-}*/
-        public IRepository<ClientProfile> ClientProfiles
-        {
-            get
-            {
-                if (clientProfileRepository == null)
-                    clientProfileRepository = new ClientProfileRepository(db);
-                return clientProfileRepository;
-            }
-        }
+        public UserManager<User> Users { get { return userManager; } }
+       /* {
+           get
+           {
+               if (userRepository == null)
+                   userRepository = new UserRepository(db);
+               return userRepository;
+           }
+        }*/
+        public RoleManager<IdentityRole> Roles { get { return roleManager; } }
+
+        public SignInManager<User> SignIn { get { return signInManager; } }
 
         public IRepository<Mark> Marks
         {
@@ -96,11 +85,6 @@ public IRepository<Role> Roles
                     attachmentRepository = new AttachmentRepository(db);
                 return attachmentRepository;
             }
-        }
-
-        public IClientManager ClientManager
-        {
-            get { return clientManager; }
         }
 
         public void Save()

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace WebApiMultilayer.BLL.DTO
 {
+   //record Mark(string Abc);
     public class MarkDTO
     {
         public int Id { get; set; }

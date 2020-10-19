@@ -23,64 +23,55 @@ namespace WebApiMultilayer.BLL.Services
             Database = uow;
         }
 
-        public async Task<ClaimsIdentity> Authenticate(UserDTO userDto, UserManager<User> managerUser, RoleManager<IdentityRole> managerRole)
+        public async Task<bool> Register(UserDTO model)
         {
-
-            ClaimsIdentity claim = null;
-            // находим пользователя
-            User user = await managerUser.FindByEmailAsync(userDto.Email);
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, userDto.UserName)
-            };
-
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            // авторизуем его и возвращаем объект ClaimsIdentity
-            return id;
-        }
-
-        public async Task<OperationDetails> Create(UserDTO userDto, UserManager<User> managerUser, RoleManager<IdentityRole> managerRole)
-        {
-            
-            var role = new IdentityRole { Name = "User" };
-            await managerRole.CreateAsync(role);
-
-            User user = await managerUser.FindByEmailAsync(userDto.Email);
+            var user = await Database.Users.FindByEmailAsync(model.Email);
             if (user == null)
             {
-                user = new User { Email = userDto.Email, UserName = userDto.Email };
-                var result = await managerUser.CreateAsync(user, userDto.Password);
-                //if (result.Errors.Count() > 0)
-                    //return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
-                // добавляем роль
-                await managerUser.AddToRoleAsync(user, userDto.Role);
-                // создаем профиль клиента
-                ClientProfile clientProfile = new ClientProfile { Id = user.Id, NumberPhone = userDto.NumberPhone };
-                Database.ClientManager.Create(clientProfile);
-                Database.Save();
-                return new OperationDetails(true, "Регистрация успешно пройдена", "");
+                user = new User { Email = model.Email, UserName = model.UserName, PhoneNumber = model.NumberPhone };
+
+                var checkAdd = await Database.Users.CreateAsync(user, model.Password);
+
+                var userRole = await Database.Roles.FindByNameAsync("user");
+
+                if (userRole == null)
+                {
+                    await Database.Roles.CreateAsync(new IdentityRole("user"));
+                    userRole = await Database.Roles.FindByNameAsync("user");
+                }
+
+                await Database.Users.AddToRoleAsync(user, userRole.Name);
+
+                if (checkAdd.Succeeded)
+                {
+                    await Database.SignIn.SignInAsync(user, false);
+                    return true;
+                }
             }
-            else
+            return false;
+        }
+
+
+        public async Task<bool> Login(UserDTO model)
+        {
+            var user = await Database.Users.FindByEmailAsync(model.Email);
+            if (user != null)
             {
-                return new OperationDetails(false, "Пользователь с таким логином уже существует", "Email");
+                var checkPassword = await Database.SignIn.CheckPasswordSignInAsync(user, model.Password, false);
+
+                if (checkPassword.Succeeded)
+                {
+                    await Database.SignIn.SignInAsync(user, false);
+                    return true;
+                }
             }
+            return false;
+
         }
 
-        public void Dispose()
+        public async Task Logout()
         {
-            Database.Dispose();
-        }
-
-        OperationDetails IUserService.Create(UserDTO userDto, UserManager<User> managerUser, RoleManager<IdentityRole> managerRole)
-        {
-            Create(userDto, managerUser, managerRole);
-            throw new NotImplementedException();
-        }
-
-        ClaimsIdentity IUserService.Authenticate(UserDTO userDto, UserManager<User> managerUser, RoleManager<IdentityRole> managerRole)
-        {
-            Authenticate(userDto, managerUser, managerRole);
-            throw new NotImplementedException();
+            await Database.SignIn.SignOutAsync();
         }
     }
 }

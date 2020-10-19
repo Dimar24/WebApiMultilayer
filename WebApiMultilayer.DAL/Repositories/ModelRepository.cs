@@ -17,29 +17,30 @@ namespace WebApiMultilayer.DAL.Repositories
             db = applicationContext;
         }
 
+        public IEnumerable<Model> GetAll()
+        {
+            return db.Models.Include(m => m.Mark).ToList();
+        }
+
+        public Model Get(int id)
+        {
+            Model model = db.Models.Include(m => m.Mark).FirstOrDefault(m => m.Id == id);
+            return model;
+        }
+
         public void Create(Model item)
         {
             db.Models.Add(item);
         }
 
+        public void Update(Model item)
+        {
+            db.Models.Update(item);
+        }
+
         public void Delete(int id)
         {
             db.Models.Remove(Get(id));
-        }
-
-        public Model Get(int id)
-        {
-            return db.Models.Find(id);
-        }
-
-        public IEnumerable<Model> GetAll()
-        {
-            return db.Models.ToList();
-        }
-
-        public void Update(Model item)
-        {
-            db.Entry(item).State = EntityState.Modified;
         }
     }
 }

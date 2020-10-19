@@ -8,6 +8,5 @@ namespace WebApiMultilayer.DAL.Entities
 {
     public class User : IdentityUser
     {
-        public virtual ClientProfile ClientProfile { get; set; }
     }
 }

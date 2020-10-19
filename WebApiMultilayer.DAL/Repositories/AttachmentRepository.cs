@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using WebApiMultilayer.DAL;
 using WebApiMultilayer.DAL.Entities;
@@ -15,29 +16,29 @@ namespace WebApiMultilayer.DAL.Repositories
             db = applicationContext;
         }
 
-        public void Create(Attachment item)
+        public IEnumerable<Attachment> GetAll()
         {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
+            return db.Attachments.ToList();
         }
 
         public Attachment Get(int id)
         {
-            throw new NotImplementedException();
+            return db.Attachments.Find(id);
         }
 
-        public IEnumerable<Attachment> GetAll()
+        public void Create(Attachment item)
         {
-            throw new NotImplementedException();
+            db.Attachments.Add(item);
         }
 
         public void Update(Attachment item)
         {
-            throw new NotImplementedException();
+            db.Attachments.Update(item);
+        }
+
+        public void Delete(int id)
+        {
+            db.Attachments.Remove(Get(id));
         }
     }
 }

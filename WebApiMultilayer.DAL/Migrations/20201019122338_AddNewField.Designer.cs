@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApiMultilayer.DAL;
 
 namespace WebApiMultilayer.DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20201019122338_AddNewField")]
+    partial class AddNewField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,6 +180,9 @@ namespace WebApiMultilayer.DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ClientProfileId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Color")
                         .IsRequired()
                         .HasColumnType("varchar(30)");
@@ -218,11 +223,26 @@ namespace WebApiMultilayer.DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClientProfileId");
+
                     b.HasIndex("ModelId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Autos");
+                });
+
+            modelBuilder.Entity("WebApiMultilayer.DAL.Entities.ClientProfile", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("NumberPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClientProfiles");
                 });
 
             modelBuilder.Entity("WebApiMultilayer.DAL.Entities.Mark", b =>
@@ -389,6 +409,10 @@ namespace WebApiMultilayer.DAL.Migrations
 
             modelBuilder.Entity("WebApiMultilayer.DAL.Entities.Auto", b =>
                 {
+                    b.HasOne("WebApiMultilayer.DAL.Entities.ClientProfile", null)
+                        .WithMany("Autos")
+                        .HasForeignKey("ClientProfileId");
+
                     b.HasOne("WebApiMultilayer.DAL.Entities.Model", "Model")
                         .WithMany("Autos")
                         .HasForeignKey("ModelId")
@@ -398,6 +422,15 @@ namespace WebApiMultilayer.DAL.Migrations
                     b.HasOne("WebApiMultilayer.DAL.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("WebApiMultilayer.DAL.Entities.ClientProfile", b =>
+                {
+                    b.HasOne("WebApiMultilayer.DAL.Entities.User", "User")
+                        .WithOne("ClientProfile")
+                        .HasForeignKey("WebApiMultilayer.DAL.Entities.ClientProfile", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("WebApiMultilayer.DAL.Entities.Model", b =>

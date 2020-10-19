@@ -14,6 +14,7 @@ namespace WebApiMultilayer.WEB.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MarkController : ControllerBase
     {
         IService<MarkDTO> _service;
@@ -46,8 +47,9 @@ namespace WebApiMultilayer.WEB.Controllers
         public IActionResult Post([FromBody] MarkDTO markDTO)
         {
             _logger.LogInformation("Add Mark: {0}", HttpContext.Request);
-            _service.Create(markDTO);
-            return Ok();
+            if(_service.Create(markDTO)) 
+                return Ok();
+            return BadRequest();
         }
 
         // PUT api/<MarkController>/5
@@ -56,8 +58,9 @@ namespace WebApiMultilayer.WEB.Controllers
         {
             _logger.LogInformation("Update Mark: {0}", HttpContext.Request);
             markDTO.Id = id;
-            _service.Update(markDTO);
-            return Ok();
+            if (_service.Update(markDTO))
+                return Ok();
+            return BadRequest();
         }
 
         // DELETE api/<MarkController>/5
@@ -65,8 +68,9 @@ namespace WebApiMultilayer.WEB.Controllers
         public IActionResult Delete([FromRoute] int id)
         {
             _logger.LogInformation("Delete Mark: {0}", HttpContext.Request);
-            _service.Delete(id);
-            return Ok();
+            if (_service.Delete(id))
+                return Ok();
+            return BadRequest();
         }
     }
 }

@@ -36,10 +36,5 @@ namespace WebApiMultilayer.WEB
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
     }
 }

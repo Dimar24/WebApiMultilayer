@@ -17,37 +17,12 @@ namespace WebApiMultilayer.BLL.Services
             Database = uow;
         }
 
-        public void Create(MarkDTO item)
-        {
-            Mark mark = Database.Marks.Get(item.Id);
-            
-            if(mark != null)
-                throw new NotImplementedException();
-            mark = new Mark
-            {
-                Name = item.Name
-            };
-            Database.Marks.Create(mark);
-            Database.Save();
-        }
-
-        public void Delete(int id)
-        {
-            Mark mark = Database.Marks.Get(id);
-
-            if (mark == null)
-                throw new NotImplementedException();
-
-            Database.Marks.Delete(id);
-            Database.Save();
-        }
-
         public MarkDTO Get(int id)
         {
             Mark mark = Database.Marks.Get(id);
 
             if (mark == null)
-                throw new NotImplementedException();
+                return null;
 
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Mark, MarkDTO>()).CreateMapper();
             return mapper.Map<Mark, MarkDTO>(Database.Marks.Get(id));
@@ -59,12 +34,29 @@ namespace WebApiMultilayer.BLL.Services
             return mapper.Map<IEnumerable<Mark>, List<MarkDTO>>(Database.Marks.GetAll());
         }
 
-        public void Update(MarkDTO item)
+        public bool Create(MarkDTO item)
+        {
+            Mark mark = Database.Marks.Get(item.Id);
+
+            if (mark != null)
+                return false;
+
+            mark = new Mark
+            {
+                Name = item.Name
+            };
+            Database.Marks.Create(mark);
+            Database.Save();
+            return true;
+        }
+
+        public bool Update(MarkDTO item)
         {
             Mark mark = Database.Marks.Get(item.Id);
 
             if (mark == null)
-                throw new NotImplementedException();
+                return false;
+
             mark = new Mark
             {
                 Id = item.Id,
@@ -73,6 +65,19 @@ namespace WebApiMultilayer.BLL.Services
 
             Database.Marks.Update(mark);
             Database.Save();
+            return true;
+        }
+
+        public bool Delete(int id)
+        {
+            Mark mark = Database.Marks.Get(id);
+
+            if (mark == null)
+                return false;
+
+            Database.Marks.Delete(id);
+            Database.Save();
+            return true;
         }
 
         public void Dispose()

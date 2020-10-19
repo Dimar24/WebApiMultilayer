@@ -1,13 +1,15 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using WebApiMultilayer.BLL.DTO;
 using WebApiMultilayer.BLL.Interfaces;
 using WebApiMultilayer.DAL.Entities;
 using WebApiMultilayer.DAL.Interfaces;
 
 namespace WebApiMultilayer.BLL.Services
 {
-    class AttachmentService : IService<Attachment>
+    public class AttachmentService : IService<AttachmentDTO>
     {
         IUnitOfWork Database { get; set; }
 
@@ -16,34 +18,61 @@ namespace WebApiMultilayer.BLL.Services
             Database = uow;
         }
 
-        public void Create(Attachment item)
+        public AttachmentDTO Get(int id)
         {
-            throw new NotImplementedException();
+            Attachment attachment = Database.Attachments.Get(id);
+
+            if (attachment == null)
+                return null;
+
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Attachment, AttachmentDTO>()).CreateMapper();
+            return mapper.Map<Attachment, AttachmentDTO>(Database.Attachments.Get(id));
         }
 
-        public void Delete(int id)
+        public IEnumerable<AttachmentDTO> GetAll()
         {
-            throw new NotImplementedException();
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Model, ModelDTO>()).CreateMapper();
+            return mapper.Map<IEnumerable<Attachment>, List<AttachmentDTO>>(Database.Attachments.GetAll());
+        }
+
+        public bool Create(AttachmentDTO item)
+        {
+            Attachment attachment = Database.Attachments.Get(item.Id);
+
+            if (attachment != null)
+                return false;
+
+            attachment = new Attachment
+            {
+                Path = item.Path,
+                AutoId = item.AutoId
+            };
+            Database.Attachments.Create(attachment);
+            Database.Save();
+            return true;
+        }
+
+        public bool Update(AttachmentDTO item)
+        {
+            //update for images?????
+            return true;
+        }
+
+        public bool Delete(int id)
+        {
+            Attachment attachment = Database.Attachments.Get(id);
+
+            if (attachment == null)
+                return false;
+
+            Database.Attachments.Delete(id);
+            Database.Save();
+            return true;
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
-        }
-
-        public Attachment Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Attachment> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Attachment item)
-        {
-            throw new NotImplementedException();
+            Database.Dispose();
         }
     }
 }
