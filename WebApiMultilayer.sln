@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiMultilayer.WEB", "WebApiMultilayer.WEB\WebApiMultilayer.WEB.csproj", "{100F8F1C-7683-4579-8070-5FE972267571}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiMultilayer.WEB", "WebApiMultilayer.WEB\WebApiMultilayer.WEB.csproj", "{100F8F1C-7683-4579-8070-5FE972267571}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiMultilayer.DAL", "WebApiMultilayer.DAL\WebApiMultilayer.DAL.csproj", "{9C7EF621-99A0-4322-851F-4E9B496B296F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiMultilayer.DAL", "WebApiMultilayer.DAL\WebApiMultilayer.DAL.csproj", "{9C7EF621-99A0-4322-851F-4E9B496B296F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiMultilayer.BLL", "WebApiMultilayer.BLL\WebApiMultilayer.BLL.csproj", "{09D9F408-9312-4586-81CF-F711526F8D60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiMultilayer.BLL", "WebApiMultilayer.BLL\WebApiMultilayer.BLL.csproj", "{09D9F408-9312-4586-81CF-F711526F8D60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiMultilayer.Tests", "WebApiMultilayer.Tests\WebApiMultilayer.Tests.csproj", "{7CE7A510-4E67-4D2D-9BE8-EF6575066D37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{09D9F408-9312-4586-81CF-F711526F8D60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09D9F408-9312-4586-81CF-F711526F8D60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09D9F408-9312-4586-81CF-F711526F8D60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CE7A510-4E67-4D2D-9BE8-EF6575066D37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CE7A510-4E67-4D2D-9BE8-EF6575066D37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CE7A510-4E67-4D2D-9BE8-EF6575066D37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CE7A510-4E67-4D2D-9BE8-EF6575066D37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

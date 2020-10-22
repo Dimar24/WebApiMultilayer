@@ -25,13 +25,25 @@ namespace WebApiMultilayer.BLL.Services
             if (auto == null)
                 return null;
 
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Auto, AutoDTO>()).CreateMapper();
-            return mapper.Map<Auto, AutoDTO>(Database.Autos.Get(id));
+            var mapper = new MapperConfiguration(cfg => 
+                {
+                    cfg.CreateMap<Model, ModelDTO>();
+                    cfg.CreateMap<Mark, MarkDTO>();
+                    cfg.CreateMap<Auto, AutoDTO>();
+                    cfg.CreateMap<User, UserDTO>();
+                }).CreateMapper();
+            return mapper.Map<Auto, AutoDTO>(auto);
         }
 
         public IEnumerable<AutoDTO> GetAll()
         {
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Model, ModelDTO>()).CreateMapper();
+            var mapper = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Auto, AutoDTO>();
+                cfg.CreateMap<Model, ModelDTO>();
+                cfg.CreateMap<Mark, MarkDTO>();
+                cfg.CreateMap<User, UserDTO>();
+            }).CreateMapper();
             return mapper.Map<IEnumerable<Auto>, List<AutoDTO>>(Database.Autos.GetAll());
         }
 
@@ -53,7 +65,7 @@ namespace WebApiMultilayer.BLL.Services
                 Year = item.Year,
                 Price = item.Price,
                 ModelId = item.ModelId,
-                OwnerId = item.OwnerId
+                UserId = item.UserId
             };
             Database.Autos.Create(auto);
             Database.Save();
@@ -78,7 +90,7 @@ namespace WebApiMultilayer.BLL.Services
                 Year = item.Year,
                 Price = item.Price,
                 ModelId = item.ModelId,
-                OwnerId = item.OwnerId
+                UserId = item.UserId
             };
 
             Database.Autos.Update(auto);

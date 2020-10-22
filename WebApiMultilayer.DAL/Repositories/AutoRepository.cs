@@ -19,10 +19,11 @@ namespace WebApiMultilayer.DAL.Repositories
 
         public Auto Get(int id)
         {
-            Auto auto = db.Autos.Find(id);
-            db.Entry(auto).Reference(m => m.Model).Load();
-            db.Entry(auto).Reference(m => m.Model.Mark).Load();
-            db.Entry(auto).Reference(u => u.User).Load();
+            Auto auto = db.Autos.Include(m => m.Model).ThenInclude(m => m.Mark).Include(u => u.User).FirstOrDefault(m => m.Id == id);
+            // model = db.Models.Include(m => m.Mark).FirstOrDefault(m => m.Id == id);
+            //db.Entry(auto).Reference(m => m.Model).Load();
+            //db.Entry(auto).Reference(m => m.Model.Mark).Load();
+            //db.Entry(auto).Reference(u => u.User).Load();
             return auto;
         }
 

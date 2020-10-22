@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApiMultilayer.BLL.DTO;
@@ -44,7 +46,7 @@ namespace WebApiMultilayer.WEB.Controllers
 
         // POST api/<AttachmentController>
         [HttpPost]
-        public IActionResult Post([FromBody] AttachmentDTO attachmentDTO)
+        public IActionResult Post([FromBody] AttachmentDTO attachmentDTO, [FromForm(Name = "formFile")] IFormFile myFile)
         {
             _logger.LogInformation("Add Mark: {0}", HttpContext.Request);
             if (_service.Create(attachmentDTO))
@@ -54,7 +56,7 @@ namespace WebApiMultilayer.WEB.Controllers
 
         // PUT api/<AttachmentController>/5
         [HttpPut("{id}")]
-        public IActionResult Put([FromRoute] int id, [FromBody] AttachmentDTO attachmentDTO)
+        public IActionResult Put([FromRoute] int id, [FromBody] AttachmentDTO attachmentDTO, [FromForm(Name = "formFile")] IFormFile myFile)
         {
             _logger.LogInformation("Update Mark: {0}", HttpContext.Request);
             attachmentDTO.Id = id;

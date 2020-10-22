@@ -36,6 +36,9 @@ namespace WebApiMultilayer.BLL.Services
 
         public bool Create(MarkDTO item)
         {
+            if (item != null)
+                return false;
+
             Mark mark = Database.Marks.Get(item.Id);
 
             if (mark != null)

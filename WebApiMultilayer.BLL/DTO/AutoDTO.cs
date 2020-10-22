@@ -20,7 +20,7 @@ namespace WebApiMultilayer.BLL.DTO
 
         public int ModelId { get; set; }
         public ModelDTO Model { get; set; }
-        public int OwnerId { get; set; }
+        public string UserId { get; set; }
         public UserDTO user { get; set; }
 
         public List<AttachmentDTO> Attachments { get; set; }

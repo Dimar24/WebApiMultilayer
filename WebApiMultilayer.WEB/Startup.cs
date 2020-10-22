@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Swashbuckle.Swagger;
 using System.Threading.Tasks;
 using WebApiMultilayer.BLL.DTO;
+using WebApiMultilayer.BLL.Infrastructure;
 using WebApiMultilayer.BLL.Interfaces;
 using WebApiMultilayer.BLL.Services;
 using WebApiMultilayer.DAL;
@@ -61,9 +63,19 @@ namespace WebApiMultilayer.WEB
             services.AddTransient<IService<AutoDTO>, AutoService>();
             services.AddTransient<IUserService, UserService>();
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(options =>
+                {
+                    options.OperationFilter<FileUploadOperation>();
+                });
+
+            services.ConfigureSwaggerGen(options =>
+            {
+                options.OperationFilter<FileUploadOperation>(); //Register File Upload Operation Filter
+            });
 
         }
 

@@ -32,7 +32,7 @@ namespace WebApiMultilayer.DAL.Configurations
             builder.Property(a => a.ModelId)
                 .IsRequired();
 
-            builder.Property(a => a.OwnerId)
+            builder.Property(a => a.UserId)
                 .IsRequired();
 
             builder.Property(a => a.Location)
